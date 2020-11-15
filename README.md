@@ -60,6 +60,16 @@
    - DELETE contato/deletaContato/{idContato}"
    - PUT contato/atualizar
    
+     ``` 
+  @Body exemplo -> contato/adicionaContato 
+{
+     "nome": "lucas henrique",
+    "telefone": "16994157664",
+    "email": "joao@gmail.com"
+}
+  ``` 
+   
+   
   ``` 
   @Body exemplo -> contato/atualizar 
 {
