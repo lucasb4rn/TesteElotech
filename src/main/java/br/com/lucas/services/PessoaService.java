@@ -1,0 +1,78 @@
+package br.com.lucas.services;
+
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import br.com.lucas.customException.DatesExpection;
+import br.com.lucas.customException.UsuarioNaoEncontradoException;
+import br.com.lucas.customException.ValidacaoCPFException;
+import br.com.lucas.entitys.Pessoa;
+import br.com.lucas.repository.PessoaRepository;
+import br.com.lucas.utils.ValidadorCPF;
+
+@Service
+public class PessoaService {
+
+	@Autowired
+	PessoaRepository pessoaRepository;
+
+	public Pessoa salvar(Pessoa pessoa) {
+		return pessoaRepository.save(pessoa);
+	}
+
+	@Transactional
+	public void deletarPessoa(Integer idPessoa) {
+		pessoaRepository.deleteById(idPessoa);
+	}
+
+	public List<Pessoa> findOneByNome(String nome) {
+		return pessoaRepository.findByNome(nome);
+	}
+
+	public Optional<Pessoa> findByIdPessoa(Integer id) {
+		return pessoaRepository.findById(id);
+	}
+
+	public Page<Pessoa> buscarTodasPessoas(Pageable pageable) {
+		return pessoaRepository.findAll(pageable);
+	}
+
+	public Pessoa adicionarPessoa(Pessoa pessoa) throws ValidacaoCPFException, DatesExpection {
+
+		ValidadorCPF validadorCPF = new ValidadorCPF();
+		boolean cpfValido = validadorCPF.valida(pessoa.getCpf());
+
+		if (cpfValido == false)
+			throw new ValidacaoCPFException("Cpf com formato inválido!");
+
+		if (pessoa.getDataNascimento().getTime() > new Date().getTime())
+			throw new DatesExpection("Data de nascimento não pode ser uma data Futura!.");
+
+		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
+		if (pessoaEncontradaNoBanco != null)
+			throw new ValidacaoCPFException("Cpf já cadastrado para outra pessoa.");
+		Integer idPessoa = pessoaRepository.findFirstByOrderByIdDesc().getId();
+		pessoa.setId(++idPessoa);
+		return pessoaRepository.save(pessoa);
+	}
+
+	public Pessoa atualizar(Pessoa pessoa) throws UsuarioNaoEncontradoException {
+		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
+		Optional<Pessoa> pessoaASerAtualizada = pessoaRepository.findById(pessoa.getId());
+		if (pessoaEncontradaNoBanco.getId() != pessoa.getId())
+			throw new ValidacaoCPFException("Cpf já cadastrado para outra pessoa, não é possivel atualizar!");
+		if (pessoaASerAtualizada == null)
+			throw new UsuarioNaoEncontradoException("A pessoa fornecida não existe para atualizar!");
+
+		return pessoaRepository.save(pessoa);
+
+	}
+
+}
