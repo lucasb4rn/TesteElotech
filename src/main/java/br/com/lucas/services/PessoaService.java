@@ -54,10 +54,9 @@ public class PessoaService {
 
 		if (pessoa.getDataNascimento().getTime() > new Date().getTime())
 			throw new DatesExpection("Data de nascimento não pode ser uma data Futura!.");
-		
+
 		if (pessoa.getListaContatos().isEmpty())
 			throw new ListaVaziaException("Lista de Contatos não pode estar Vazia!");
-		
 
 		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
 		if (pessoaEncontradaNoBanco != null)
@@ -68,10 +67,18 @@ public class PessoaService {
 	}
 
 	public Pessoa atualizar(Pessoa pessoa) throws UsuarioNaoEncontradoException {
+		
+		boolean cpfValido = ValidaDocumentos.isValidoCPF(pessoa.getCpf());
+		if (cpfValido == false)
+			throw new ValidacaoCPFException("Cpf com formato inválido!");
+		
 		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
 		Optional<Pessoa> pessoaASerAtualizada = pessoaRepository.findById(pessoa.getId());
-		if (pessoaEncontradaNoBanco.getId() != pessoa.getId())
-			throw new ValidacaoCPFException("Cpf já cadastrado para outra pessoa, não é possivel atualizar!");
+		if (pessoaEncontradaNoBanco != null) {
+			if (pessoaEncontradaNoBanco.getId() != pessoa.getId())
+				throw new ValidacaoCPFException("Cpf já cadastrado para outra pessoa, não é possivel atualizar!");
+		}
+
 		if (pessoaASerAtualizada == null)
 			throw new UsuarioNaoEncontradoException("A pessoa fornecida não existe para atualizar!");
 
