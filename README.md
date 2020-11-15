@@ -78,8 +78,11 @@
     "telefone": "16994157664",
     "email": "joao@gmail.com"
 }
+
   ``` 
+  
   ## EXEMPLO DE JSON DE ERRO
+  
   ``` 
   [
     {
