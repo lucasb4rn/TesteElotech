@@ -83,14 +83,6 @@ public class TestaPessoaRepository {
 
 	}
 
-	@Test
-	public void deveDarErroAoValidarUmaPessoaSemUmContato() {
-		Pessoa pessoa = new Pessoa("Lucas", "128.013.580-88", new Date("30/03/1994"), null);
-		Set<ConstraintViolation<Pessoa>> violations = validator.validate(pessoa);
-		assertFalse(violations.isEmpty());
-	}
-
-	
 	
 	@Test
 	public void devoRetornarErroPorNomeVazio() {
