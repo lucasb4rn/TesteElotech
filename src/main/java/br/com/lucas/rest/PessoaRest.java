@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.lucas.customException.DatesExpection;
+import br.com.lucas.customException.ListaVaziaException;
 import br.com.lucas.customException.UsuarioNaoEncontradoException;
 import br.com.lucas.customException.ValidacaoCPFException;
 import br.com.lucas.entitys.Pessoa;
@@ -41,9 +42,9 @@ public class PessoaRest {
 	}
 
 	@Transactional
-	@RequestMapping(value = "pessoa/adicionarPessoa", method = RequestMethod.POST)
+	@RequestMapping(value = "pessoa/adicionaPessoa", method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Pessoa addPessoa(@Valid @RequestBody Pessoa pessoa) throws ValidacaoCPFException, DatesExpection {
+	public Pessoa addPessoa(@Valid @RequestBody Pessoa pessoa) throws ValidacaoCPFException, DatesExpection, ListaVaziaException {
 		return pessoaService.adicionarPessoa(pessoa);
 	}
 

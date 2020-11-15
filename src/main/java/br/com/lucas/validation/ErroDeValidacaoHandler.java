@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import br.com.lucas.customException.ValidacaoCPFException;
 import br.com.lucas.customException.DatesExpection;
 import br.com.lucas.customException.FormatoEmailIncorretoExpection;
+import br.com.lucas.customException.ListaVaziaException;
 
 @RestControllerAdvice
 public class ErroDeValidacaoHandler {
@@ -64,6 +65,14 @@ public class ErroDeValidacaoHandler {
 	@ExceptionHandler(DatesExpection.class)
 	public Erro handle(DatesExpection exception) {
 		Erro erro = new Erro("dataNascimento", exception.getMessage());
+		return erro;
+
+	}
+	
+	@ResponseStatus(code = HttpStatus.BAD_REQUEST)
+	@ExceptionHandler(ListaVaziaException.class)
+	public Erro handle(ListaVaziaException exception) {
+		Erro erro = new Erro("listaContatos", exception.getMessage());
 		return erro;
 
 	}

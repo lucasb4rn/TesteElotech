@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -36,7 +37,6 @@ public class Pessoa {
 	@NotNull(message = "data não pode ser vazia")
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataNascimento;
-	@NotNull
 	@OneToMany(mappedBy = "pessoa",
 	        cascade = CascadeType.ALL,
 	        orphanRemoval = true)

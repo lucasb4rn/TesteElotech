@@ -13,6 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import br.com.lucas.customException.DatesExpection;
+import br.com.lucas.customException.ListaVaziaException;
 import br.com.lucas.customException.ValidacaoCPFException;
 import br.com.lucas.entitys.Contato;
 import br.com.lucas.entitys.Pessoa;
@@ -27,7 +28,7 @@ public class TestaPessoaService {
 	PessoaService pessoaService;
 
 	@Test
-	public void devoRetornarErroPorDataNascimentoMaiorQueAtual() {
+	public void devoRetornarErroPorDataNascimentoMaiorQueAtual() throws ValidacaoCPFException, ListaVaziaException {
 		List<Contato> list = new ArrayList();
 		Contato contato = new Contato("Frederico", "16994157664", "lucas.b4rn@gmail.com");
 		Pessoa pessoa = new Pessoa("Lucas", "601.145.630-80", new Date("30/03/2222"), list);
@@ -41,7 +42,7 @@ public class TestaPessoaService {
 	
 	
 	@Test
-	public void devoRetornarErroPorCpfForaDeFormato() throws DatesExpection {
+	public void devoRetornarErroPorCpfForaDeFormato() throws DatesExpection, ListaVaziaException {
 		List<Contato> list = new ArrayList();
 		Contato contato = new Contato("Frederico", "16994157664", "lucas.b4rn@gmail.com");
 		Pessoa pessoa = new Pessoa("Lucas", "601.145.630.80", new Date("30/03/2222"), list);

@@ -11,11 +11,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import br.com.lucas.customException.DatesExpection;
+import br.com.lucas.customException.ListaVaziaException;
 import br.com.lucas.customException.UsuarioNaoEncontradoException;
 import br.com.lucas.customException.ValidacaoCPFException;
 import br.com.lucas.entitys.Pessoa;
 import br.com.lucas.repository.PessoaRepository;
-import br.com.lucas.utils.ValidadorCPF;
+import br.com.lucas.utils.ValidaDocumentos;
 
 @Service
 public class PessoaService {
@@ -44,16 +45,19 @@ public class PessoaService {
 		return pessoaRepository.findAll(pageable);
 	}
 
-	public Pessoa adicionarPessoa(Pessoa pessoa) throws ValidacaoCPFException, DatesExpection {
+	public Pessoa adicionarPessoa(Pessoa pessoa) throws ValidacaoCPFException, DatesExpection, ListaVaziaException {
 
-		ValidadorCPF validadorCPF = new ValidadorCPF();
-		boolean cpfValido = validadorCPF.valida(pessoa.getCpf());
+		boolean cpfValido = ValidaDocumentos.isValidoCPF(pessoa.getCpf());
 
 		if (cpfValido == false)
 			throw new ValidacaoCPFException("Cpf com formato inválido!");
 
 		if (pessoa.getDataNascimento().getTime() > new Date().getTime())
 			throw new DatesExpection("Data de nascimento não pode ser uma data Futura!.");
+		
+		if (pessoa.getListaContatos().isEmpty())
+			throw new ListaVaziaException("Lista de Contatos não pode estar Vazia!");
+		
 
 		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
 		if (pessoaEncontradaNoBanco != null)
