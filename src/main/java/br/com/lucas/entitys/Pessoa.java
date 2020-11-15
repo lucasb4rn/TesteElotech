@@ -95,15 +95,6 @@ public class Pessoa {
 		this.listaContatos = listaContatos;
 	}
 	
-	public Pessoa atualizar(Integer id, PessoaRepository pessoaRepository) {
-		Pessoa pessoa = pessoaRepository.getOne(id);
-		pessoa.setCpf(this.cpf);
-		pessoa.setDataNascimento(this.dataNascimento);
-		pessoa.setNome(this.nome);
-		pessoa.setListaContatos(this.listaContatos);
-		return pessoa;
-	}
-	
 	
 	
 }
