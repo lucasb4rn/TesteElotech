@@ -61,17 +61,24 @@ public class PessoaService {
 		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
 		if (pessoaEncontradaNoBanco != null)
 			throw new ValidacaoCPFException("Cpf já cadastrado para outra pessoa.");
-		Integer idPessoa = pessoaRepository.findFirstByOrderByIdDesc().getId();
-		pessoa.setId(++idPessoa);
+		Pessoa ultimaPessoaAdicionada = pessoaRepository.findFirstByOrderByIdDesc();
+
+		if (ultimaPessoaAdicionada != null) {
+			Integer idPessoa = ultimaPessoaAdicionada.getId();
+			pessoa.setId(++idPessoa);
+		} else {
+			pessoa.setId(1);
+		}
+
 		return pessoaRepository.save(pessoa);
 	}
 
 	public Pessoa atualizar(Pessoa pessoa) throws UsuarioNaoEncontradoException {
-		
+
 		boolean cpfValido = ValidaDocumentos.isValidoCPF(pessoa.getCpf());
 		if (cpfValido == false)
 			throw new ValidacaoCPFException("Cpf com formato inválido!");
-		
+
 		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
 		Optional<Pessoa> pessoaASerAtualizada = pessoaRepository.findById(pessoa.getId());
 		if (pessoaEncontradaNoBanco != null) {

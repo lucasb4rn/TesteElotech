@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import br.com.lucas.customException.ValidacaoCPFException;
 import br.com.lucas.customException.FormatoEmailIncorretoExpection;
 import br.com.lucas.entitys.Contato;
+import br.com.lucas.entitys.Pessoa;
 import br.com.lucas.repository.ContatoRepository;
 import br.com.lucas.utils.ValidadorEmail;
 import javassist.NotFoundException;
@@ -44,15 +45,22 @@ public class ContatoService {
 		return contatoRepository.findAll(pageable);
 	}
 
-	public Contato adicionaContato(Contato Contato) throws FormatoEmailIncorretoExpection {
+	public Contato adicionaContato(Contato contato) throws FormatoEmailIncorretoExpection {
 		
 		ValidadorEmail validadorEmail = new ValidadorEmail();
-		boolean emailValidado = validadorEmail.valida(Contato.getEmail());
+		boolean emailValidado = validadorEmail.valida(contato.getEmail());
 		if(emailValidado == false)  throw new FormatoEmailIncorretoExpection("Formato do Email está inválido!");
 		
-		Integer idContato = contatoRepository.findFirstByOrderByIdDesc().getId();
-		Contato.setId(++idContato);
-		return contatoRepository.save(Contato);
+		Contato ultimoContatoAdicionado = contatoRepository.findFirstByOrderByIdDesc();
+
+		if (ultimoContatoAdicionado != null) {
+			Integer idPessoa = ultimoContatoAdicionado.getId();
+			contato.setId(++idPessoa);
+		} else {
+			contato.setId(1);
+		}
+
+		return contatoRepository.save(contato);
 	}
 
 	public Contato atualizar(Contato contato) throws NotFoundException {
