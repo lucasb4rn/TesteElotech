@@ -72,13 +72,11 @@ public class TestaPessoaRepository {
 	public void deveAdicionarUmaPessoaEremovelaComSucesso() {
 		List<Contato> list = new ArrayList();
 		Contato contato = new Contato("Frederico", "16994157664", "lucas.b4rn@gmail.com");
-		Pessoa pessoa = new Pessoa("Lucas", "128.013.580-88", new Date("30/03/1994"), list);
+		Pessoa pessoa = new Pessoa("Lucas", "760.010.660-43", new Date("30/03/1994"), list);
 		pessoaRepository.save(pessoa);
-		Optional<Pessoa> pessoaAdicionada = pessoaRepository.findById(999);
-		assertNotNull(pessoaAdicionada);
-		Pessoa pessoaEncontrada = pessoaRepository.findByCpf("128.013.580-88");
+		Pessoa pessoaEncontrada = pessoaRepository.findByCpf("760.010.660-43");
 		pessoaRepository.deleteById(pessoaEncontrada.getId());
-		Pessoa pessoaEncontradaAposDeletar = pessoaRepository.findByCpf("128.013.580-88");
+		Pessoa pessoaEncontradaAposDeletar = pessoaRepository.findByCpf("760.010.660-43");
 		assertNull(pessoaEncontradaAposDeletar);
 
 	}

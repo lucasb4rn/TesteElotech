@@ -50,7 +50,7 @@ public class TestaPessoaService {
 		List<Contato> list = new ArrayList();
 		Contato contato = new Contato("Frederico", "16994157664", "lucas.b4rn@gmail.com");
 		list.add(contato);
-		Pessoa pessoa = new Pessoa("Lucas", "601.145.630-80", new Date("30/03/1994"), list);
+		Pessoa pessoa = new Pessoa("Lucas", "601.145.630-99", new Date("30/03/1994"), list);
 		try {
 			pessoaService.adicionarPessoa(pessoa);
 			
