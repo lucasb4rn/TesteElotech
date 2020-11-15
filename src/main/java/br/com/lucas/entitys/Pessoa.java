@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotBlank;
@@ -22,7 +23,6 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import br.com.lucas.repository.PessoaRepository;
 
 @Entity
-@EnableAutoConfiguration
 @Table(name = "pes_pessoa")
 public class Pessoa {
 
@@ -37,9 +37,7 @@ public class Pessoa {
 	@NotNull(message = "data não pode ser vazia")
 	@JsonFormat(pattern="dd/MM/yyyy")
 	private Date dataNascimento;
-	@OneToMany(mappedBy = "pessoa",
-	        cascade = CascadeType.ALL,
-	        orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Contato> listaContatos;
 	
 	

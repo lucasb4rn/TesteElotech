@@ -59,8 +59,11 @@ public class PessoaService {
 			throw new ListaVaziaException("Lista de Contatos não pode estar Vazia!");
 
 		Pessoa pessoaEncontradaNoBanco = pessoaRepository.findByCpf(pessoa.getCpf());
-		if (pessoaEncontradaNoBanco != null)
+		if (pessoaEncontradaNoBanco != null) {
+			if(pessoaEncontradaNoBanco.getId() != pessoa.getId()) 
 			throw new ValidacaoCPFException("Cpf já cadastrado para outra pessoa.");
+		}
+			
 		Pessoa ultimaPessoaAdicionada = pessoaRepository.findFirstByOrderByIdDesc();
 
 		if (ultimaPessoaAdicionada != null) {

@@ -1,49 +1,45 @@
 package br.com.lucas.entitys;
 
-
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 @Entity
-@EnableAutoConfiguration
-@ResponseBody
 @Table(name = "pes_contato")
 public class Contato {
 
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Id
 	private Integer id;
-	@NotNull @NotBlank
+	@NotNull
+	@NotBlank
 	private String nome;
-	@NotNull(message = "nome não pode ser nulo") @NotBlank(message = "nome não pode ser vazio") 
+	@NotNull(message = "nome não pode ser nulo")
+	@NotBlank(message = "nome não pode ser vazio")
 	private String telefone;
-	@NotNull @NotBlank @Email(message="Email inválido")
+	@NotNull
+	@NotBlank
+	@Email(message = "Email inválido")
 	private String email;
-	@ManyToOne(fetch = FetchType.LAZY)
-    private Pessoa pessoa;
-	
 
 	public Contato() {
 	}
 
-	
 	public Contato(String nome, @NotNull String telefone, @NotNull String email) {
 		this.nome = nome;
 		this.telefone = telefone;
 		this.email = email;
 	}
-	
+
 	public Contato(Integer id, @NotNull String nome, @NotNull String telefone, @NotNull String email) {
 		this.id = id;
 		this.nome = nome;
